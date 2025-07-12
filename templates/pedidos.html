@@ -53,9 +53,8 @@
 
             <label for="id_conductor">Conductor:</label>
             <select id="id_conductor" name="id_conductor" required>
-              <option value="">Selecciona un conductor</option>
-              {% for conductor in conductores %}
-                <option value="{{ conductor[0] }}">{{ conductor[0] }}</option>
+              {% for id_conductor, nombre_conductor in conductores %}
+                <option value="{{ id_conductor }}">{{ nombre_conductor }}</option>
               {% endfor %}
             </select>
 
@@ -93,6 +92,7 @@
                 <th>Peso</th>
                 <th>Origen</th>
                 <th>Destino</th>
+                <th>Dias Estimados</th>
               </tr>
             </thead>
             <tbody>
@@ -106,6 +106,7 @@
                 <td>{{ fila[5] }}</td>
                 <td>{{ fila[6] }}</td>
                 <td>{{ fila[7] }}</td>
+                <td>{{ fila[8] }}</td>
               </tr>
               {% endfor %}
             </tbody>

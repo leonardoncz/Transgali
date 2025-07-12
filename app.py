@@ -16,8 +16,13 @@ def pedidos():
     
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM SERVICIOTRANSPORTE")
+
+
+    cursor.execute("""
+    SELECT ST.*, TiempoEstimado(ST.IDSERVICIOTRANSPORTE) AS DIAS_ESTIMADOS
+    FROM SERVICIOTRANSPORTE ST""")
     pedidos = cursor.fetchall()
+
         # Consulta para obtener todas las empresas
     cursor.execute("""
         SELECT EC.IDEMPRESACLIENTE, EC.NOMBREEMPRESA
@@ -39,7 +44,7 @@ def pedidos():
     print("Vehículos disponibles para asignar:", vehiculos)
     # Consulta para obtener los conductores que no están registrados
     cursor.execute("""
-        SELECT C.NOMBREEMPLEADO
+        SELECT C.IDCONDUCTOR, C.NOMBREEMPLEADO
         FROM CONDUCTOR C
         WHERE C.IDCONDUCTOR NOT IN (
             SELECT SC.IDCONDUCTOR
@@ -57,9 +62,10 @@ def pedidos():
 
 @app.route('/registrar_servicio', methods=['POST'])
 def registrar_servicio():
+    
     id_vehiculo = int(request.form['id_vehiculo'])
     id_empresa = int(request.form['id_empresa'])
-
+    id_conductor = int(request.form['id_conductor'])
     peso = request.form['peso']
     origen = request.form['origen']
     destino = request.form['destino']
@@ -78,7 +84,8 @@ def registrar_servicio():
         fecha_entrega,
         peso,
         origen,
-        destino
+        destino,
+        id_conductor
     ])
     conn.commit()
 
