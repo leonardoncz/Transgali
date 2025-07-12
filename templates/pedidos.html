@@ -9,48 +9,90 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  
+  <header class="top-navbar">
+  <div class="navbar-brand">
+    <h2>Transgali SAC</h2>
+  </div>
+  <nav class="navbar-nav">
+    <ul>
+      <li><a href="/"><i class="fas fa-home"></i> Nosotros</a></li>
+      <li><a href="/vehiculos"><i class="fas fa-truck"></i> Vehículos</a></li>
+      <li><a href="/pedidos"><i class="fas fa-box"></i> Pedidos</a></li>
+      <li><a href="/clientes"><i class="fas fa-users"></i> Conductores</a></li>
+      <li><a href="/perfil"><i class="fas fa-money-bill"></i> Pagos</a></li>
+    </ul>
+  </nav>
+  <div class="user-info">
+    <span><i class="fas fa-user-circle"></i> Nombre del empleado</span>
+    <a href="/logout" class="logout-btn">Cerrar sesión</a>
+  </div>
+</header>
   <div class="layout">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2>Transgali</h2>
-      </div>
-      <nav class="sidebar-nav">
-        <ul>
-          <li><a href="/"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="/pedidos" class="active"><i class="fas fa-box"></i> Pedidos</a></li>
-          <li><a href="/vehiculos"><i class="fas fa-truck"></i> Vehículos</a></li>
-          <li><a href="/clientes"><i class="fas fa-users"></i> Clientes</a></li>
-          <li><a href="/perfil"><i class="fas fa-user"></i> Perfil</a></li>
-        </ul>
-      </nav>
-    </aside>
-
     <!-- Contenido principal -->
     <main class="main-content">
-      <header class="topbar">
-        <div class="user-info">
-          <span><i class="fas fa-user-circle"></i> Nombre del empleado</span>
-          <a href="/logout" class="logout-btn">Cerrar sesión</a>
-        </div>
-      </header>
-
       <section class="dashboard">
-        <h1>Gestor de Pedidos</h1>
-        <p>Ver, registrar y actualizar los pedidos de los clientes</p>
+        <div class="registro-formulario">
+          <h1>Registro de Servicio de Transporte</h1>
+          <form action="{{ url_for('registrar_servicio') }}" method="POST">
+
+            <label for="id_vehiculo">ID Vehículo:</label>
+            <select name="id_vehiculo">
+              {% for id_vehiculo, placa_tracto, placa_carreta in vehiculos %}
+                  <option value="{{ id_vehiculo }}">{{ placa_tracto }} - {{ placa_carreta }}</option>
+              {% endfor %}
+            </select>
+
+
+            <label for="id_empresa">ID Empresa:</label>
+            <select name="id_empresa">
+              {% for id_empresa, nombre_empresa in empresas %}
+                  <option value="{{ id_empresa }}">{{ nombre_empresa }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="id_conductor">Conductor:</label>
+            <select id="id_conductor" name="id_conductor" required>
+              <option value="">Selecciona un conductor</option>
+              {% for conductor in conductores %}
+                <option value="{{ conductor[0] }}">{{ conductor[0] }}</option>
+              {% endfor %}
+            </select>
+
+            
+            <label for="fecha_inicio">Fecha Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+
+            <label for="fecha_entrega">Fecha Entrega:</label>
+            <input type="date" id="fecha_entrega" name="fecha_entrega" required>
+
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" name="peso" required>
+
+            <label for="origen">Origen:</label>
+            <input type="text" id="origen" name="origen" required>
+
+            <label for="destino">Destino:</label>
+            <input type="text" id="destino" name="destino" required>
+
+
+  
+            <button type="submit" class="btn">Registrar</button>
+          </form>
+        </div>
+
         <div class="content-box">
-          <!-- Ejemplo de tabla -->
           <table>
             <thead>
               <tr>
-                <th>GR</th>
-                <th>NumBoleta</th>
-                <th>Subtotal</th>
-                <th>Total</th>
-                <th>IdBoletaServicio</th>
-                <th>IdServicioTransporte</th>
-                <th>IdCliente</th>
-                <th>IdUsuario</th>
+                <th>ID Servicio Transporte</th>
+                <th>ID Vehículo</th>
+                <th>ID Empresa Cliente</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Entrega</th>
+                <th>Peso</th>
+                <th>Origen</th>
+                <th>Destino</th>
               </tr>
             </thead>
             <tbody>
