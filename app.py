@@ -14,6 +14,7 @@ def dashboard():
 @app.route('/pedidos')
 def pedidos():
     
+    
     connection = get_connection()
     cursor = connection.cursor()
 
@@ -96,6 +97,41 @@ def registrar_servicio():
         # Redirigir a la lista de pedidos
     return redirect(url_for('pedidos'))
 
+# ACTUALIZAR PESO DEL SERVICIO
+@app.route('/actualizar_peso', methods=['POST'])
+def actualizar_peso():
+    id_servicio = int(request.form['id_servicio_actualizar'])
+    nuevo_peso = int(request.form['nuevo_peso'])
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.callproc("ActualizarPesoServicio", [id_servicio, nuevo_peso])
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    flash("Peso actualizado correctamente", "success")
+    return redirect(url_for('pedidos'))
+
+
+# ELIMINAR SERVICIO DE TRANSPORTE
+@app.route('/eliminar_servicio', methods=['POST'])
+def eliminar_servicio():
+    id_servicio = int(request.form['id_servicio_eliminar'])
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.callproc("EliminarServicioTransporte", [id_servicio])
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    flash("Servicio eliminado correctamente", "success")
+    return redirect(url_for('pedidos'))
 
 
 
